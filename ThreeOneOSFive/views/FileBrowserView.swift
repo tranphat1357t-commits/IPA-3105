@@ -1155,7 +1155,12 @@ struct FileBrowserView: View {
                     log("filebrowser: traversal grant \(path) -> \(handle)")
                 }
             }
-            let loadedEntries = ContainerStore.listFiles(at: path)
+            // Bundled patch packages are implementation resources, not user
+            // files. Keep them out of the in-app file browser so the app
+            // bundle does not look cluttered with internal .3105 files.
+            let loadedEntries = ContainerStore.listFiles(at: path).filter {
+                !$0.name.lowercased().hasSuffix(".3105")
+            }
             DispatchQueue.main.async {
                 guard currentPath == path else { return }
                 entries = loadedEntries
