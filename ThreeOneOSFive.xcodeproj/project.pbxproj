@@ -48,6 +48,11 @@
 3105K210 /* Aim Body FFTH */ = {isa = PBXBuildFile; fileRef = 3105K201; };
 3105K211 /* Aim Drag FFTH */ = {isa = PBXBuildFile; fileRef = 3105K202; };
 3105K212 /* Aim Neck FFTH */ = {isa = PBXBuildFile; fileRef = 3105K203; };
+3105K213 /* Aim Chest FFTH */ = {isa = PBXBuildFile; fileRef = 3105K204; };
+3105K220 /* Aim Body FFM */ = {isa = PBXBuildFile; fileRef = 3105K401; };
+3105K221 /* Aim Chest FFM */ = {isa = PBXBuildFile; fileRef = 3105K402; };
+3105K222 /* Aim Neck FFM */ = {isa = PBXBuildFile; fileRef = 3105K403; };
+3105K223 /* Aim Drag FFM */ = {isa = PBXBuildFile; fileRef = 3105K404; };
 		3105C200 /* PatchDraftService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105C100; };
 		3105C201 /* PatchDraftCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105C101; };
 		3105C202 /* FolderPatchSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105C102; };
@@ -134,6 +139,11 @@
 3105K201 /* Aim_Body_Free_Fire_1787211276881.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Body_Free_Fire_1787211276881.3105; sourceTree = "<group>"; };
 3105K202 /* Aim_Drag_Free_Fire_1787211276882.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Drag_Free_Fire_1787211276882.3105; sourceTree = "<group>"; };
 3105K203 /* Aim_Neck_Free_Fire_1787211276883.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Neck_Free_Fire_1787211276883.3105; sourceTree = "<group>"; };
+3105K204 /* Aim_Chest_Free_Fire_1787232674206.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Chest_Free_Fire_1787232674206.3105; sourceTree = "<group>"; };
+3105K401 /* Aim_Body_Free_Fire_Max_1787232674206.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Body_Free_Fire_Max_1787232674206.3105; sourceTree = "<group>"; };
+3105K402 /* Aim_Chest_Free_Fire_Max_1787232674206.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Chest_Free_Fire_Max_1787232674206.3105; sourceTree = "<group>"; };
+3105K403 /* Aim_Neck_Free_Fire_Max_1787232674207.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Neck_Free_Fire_Max_1787232674207.3105; sourceTree = "<group>"; };
+3105K404 /* Aim_Drag_Free_Fire_Max_1787232674207.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Drag_Free_Fire_Max_1787232674207.3105; sourceTree = "<group>"; };
 		3105C100 /* PatchDraftService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchDraftService.swift; sourceTree = "<group>"; };
 		3105C101 /* PatchDraftCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchDraftCoordinator.swift; sourceTree = "<group>"; };
 		3105C102 /* FolderPatchSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderPatchSelectionView.swift; sourceTree = "<group>"; };
@@ -243,6 +253,7 @@
 isa = PBXGroup;
 children = (
 3105K301 /* FFTH */,
+3105K302 /* FFM */,
 );
 path = Patches;
 sourceTree = "<group>";
@@ -253,8 +264,20 @@ children = (
 3105K201 /* Aim_Body_Free_Fire_1787211276881.3105 */,
 3105K202 /* Aim_Drag_Free_Fire_1787211276882.3105 */,
 3105K203 /* Aim_Neck_Free_Fire_1787211276883.3105 */,
+3105K204 /* Aim_Chest_Free_Fire_1787232674206.3105 */,
 );
 path = FFTH;
+sourceTree = "<group>";
+};
+3105K302 /* FFM */ = {
+isa = PBXGroup;
+children = (
+3105K401 /* Aim_Body_Free_Fire_Max_1787232674206.3105 */,
+3105K402 /* Aim_Chest_Free_Fire_Max_1787232674206.3105 */,
+3105K403 /* Aim_Neck_Free_Fire_Max_1787232674207.3105 */,
+3105K404 /* Aim_Drag_Free_Fire_Max_1787232674207.3105 */,
+);
+path = FFM;
 sourceTree = "<group>";
 };
 		3105A405 /* helpers */ = {
@@ -382,6 +405,11 @@ sourceTree = "<group>";
 3105K210 /* Aim Body FFTH */,
 3105K211 /* Aim Drag FFTH */,
 3105K212 /* Aim Neck FFTH */,
+3105K213 /* Aim Chest FFTH */,
+3105K220 /* Aim Body FFM */,
+3105K221 /* Aim Chest FFM */,
+3105K222 /* Aim Neck FFM */,
+3105K223 /* Aim Drag FFM */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
