@@ -6,8 +6,6 @@ struct ContentView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var patchDraftCoordinator: PatchDraftCoordinator
     @State private var tabNavigation: AppTabNavigationState
-    @AppStorage(FeatureVisibility.cleanerStorageKey) private var cleanerEnabled = true
-    @AppStorage(FeatureVisibility.wallpapersStorageKey) private var wallpapersEnabled = true
 
     init() {
 #if targetEnvironment(simulator)
@@ -41,16 +39,10 @@ struct ContentView: View {
         .tint(AppTheme.accent)
         .imageScale(.small)
         .onChange(of: patchDraftCoordinator.request?.id) { requestID in
-            if requestID != nil { tabNavigation.select(AppSection.patches.rawValue) }
+            if requestID != nil { tabNavigation.select(AppSection.home.rawValue) }
         }
         .onChange(of: patchDraftCoordinator.importRequest?.id) { requestID in
-            if requestID != nil { tabNavigation.select(AppSection.patches.rawValue) }
-        }
-        .onChange(of: cleanerEnabled) { _ in
-            tabNavigation.reconcileSelection(with: featureVisibility)
-        }
-        .onChange(of: wallpapersEnabled) { _ in
-            tabNavigation.reconcileSelection(with: featureVisibility)
+            if requestID != nil { tabNavigation.select(AppSection.home.rawValue) }
         }
         .onAppear {
             tabNavigation.reconcileSelection(with: featureVisibility)
@@ -110,11 +102,7 @@ struct ContentView: View {
     private func sectionContent(_ section: AppSection) -> some View {
         switch section {
         case .home:
-            DashboardView(
-                cleanerEnabled: $cleanerEnabled,
-                wallpapersEnabled: $wallpapersEnabled,
-                wallpapersSupported: wallpapersSupported
-            )
+            DashboardView()
         case .files:
             AppDataBrowserView(
                 tabSession: filesTabSession
@@ -143,15 +131,7 @@ struct ContentView: View {
     }
 
     private var featureVisibility: FeatureVisibility {
-        FeatureVisibility(
-            cleanerEnabled: cleanerEnabled,
-            wallpapersEnabled: wallpapersEnabled,
-            wallpapersSupported: wallpapersSupported
-        )
-    }
-
-    private var wallpapersSupported: Bool {
-        WallpaperFeatureSupportPolicy.isSupported(major: AppInfo.versionTuple.major)
+        FeatureVisibility(cleanerEnabled: false, wallpapersEnabled: false, wallpapersSupported: false)
     }
 
     private var selectedVisibleSection: AppSection {
@@ -209,16 +189,12 @@ private struct DashboardView: View {
     @EnvironmentObject private var appState: AppState
     @State private var showSettings = false
     @State private var showLogs = false
-    @Binding var cleanerEnabled: Bool
-    @Binding var wallpapersEnabled: Bool
-    let wallpapersSupported: Bool
-
     var body: some View {
         NavigationStack {
             List {
                 deviceSection
                 GameSelectionView()
-                featuresSection
+                contactSection
             }
             .navigationBarTitleDisplayMode(.inline)
             .tint(AppTheme.accent)
@@ -241,20 +217,19 @@ private struct DashboardView: View {
         }
     }
 
-    private var featuresSection: some View {
+    private var contactSection: some View {
         Section {
-            Toggle(isOn: $cleanerEnabled) {
-                Label(language.text("tab.cleaner"), systemImage: "sparkles")
+            Link(destination: URL(string: "https://zalo.me/0379957836")!) {
+                Label("Zalo: 0379957836", systemImage: "phone.fill")
             }
-            if wallpapersSupported {
-                Toggle(isOn: $wallpapersEnabled) {
-                    Label(language.text("tab.wallpapers"), systemImage: "photo.on.rectangle.angled")
-                }
+            Link(destination: URL(string: "https://t.me/nguyen_quan_dz")!) {
+                Label("Telegram: nguyen_quan_dz", systemImage: "paperplane.fill")
+            }
+            Link(destination: URL(string: "https://zalo.me/g/gjjxyw976")!) {
+                Label("Box Zalo", systemImage: "message.fill")
             }
         } header: {
-            Text(language.text("dashboard.features"))
-        } footer: {
-            Text(language.text("dashboard.features_footer"))
+            Text("LIÊN HỆ")
         }
     }
 

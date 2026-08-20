@@ -128,15 +128,18 @@ final class FFTHPatchController: ObservableObject {
     private var packageIDs: [FFTHPatchPreset: UUID] = [:]
 
     func prepare() {
-        guard !UserDefaults.standard.bool(forKey: Self.installedKey) else {
-            loadPackageIDs()
+        loadPackageIDs()
+        let missingPresets = FFTHPatchPreset.allCases.filter {
+            packageIDs[$0] == nil || item(for: $0) == nil
+        }
+        guard !missingPresets.isEmpty || !UserDefaults.standard.bool(forKey: Self.installedKey) else {
             syncEnabledState()
             return
         }
 
         busyPreset = nil
         do {
-            for preset in FFTHPatchPreset.allCases {
+            for preset in FFTHPatchPreset.allCases where missingPresets.contains(preset) {
                 guard let sourceURL = Bundle.main.url(
                     forResource: preset.resourceName,
                     withExtension: "3105"
