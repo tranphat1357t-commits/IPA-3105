@@ -14,7 +14,7 @@ struct SettingsView: View {
                         AppLogo()
 
                         VStack(alignment: .leading, spacing: 3) {
-                            Text("3105").font(.headline)
+                            Text("BRIAN VN").font(.headline)
                             Text(language.text("common.version", appVersion))
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
@@ -79,9 +79,9 @@ struct SettingsView: View {
 
                 Section(language.text("settings.credits")) {
                     creditsRow(
-                        name: "YangJiii",
+                        name: "Nguyễn Đình Quân",
                         role: language.text("credit.yangjiii"),
-                        url: "https://x.com/duongduong0908"
+                        url: "https://zalo.me/0379957836"
                     )
                     creditsRow(
                         name: "0xjohnnydev",

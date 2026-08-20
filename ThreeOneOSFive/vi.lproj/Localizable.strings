@@ -19,7 +19,7 @@
 "update.dismiss" = "Không hiển thị lại";
 "patch.error.wrong_password" = "Sai mật khẩu.";
 
-"attribution.title" = "Giới thiệu 3105";
+"attribution.title" = "Giới thiệu BRIAN VN";
 "attribution.subtitle" = "Thông tin dự án";
 "attribution.link_section" = "Liên kết dự án";
 "attribution.url" = "URL";
@@ -30,8 +30,8 @@
 "onboarding.language_title" = "Chọn ngôn ngữ";
 "onboarding.language_subtitle" = "Bạn có thể đổi lại trong Cài đặt.";
 "onboarding.language_hint" = "Chọn một ngôn ngữ để tiếp tục.";
-"onboarding.welcome_title" = "Chào Mừng Đến Với 3105";
-"onboarding.welcome_message" = "Ứng dụng được phát triển bởi YangJiii";
+"onboarding.welcome_title" = "Chào Mừng Đến Với BRIAN VN";
+"onboarding.welcome_message" = "Ứng dụng được phát triển bởi Nguyễn Đình Quân";
 "onboarding.welcome_badge" = "Định danh chính thức 3105";
 "onboarding.versions_title" = "Phiên bản iOS được hỗ trợ";
 "onboarding.versions_subtitle" = "3105 đã được xác minh trên các khoảng bên dưới. Build ngoài phạm vi sẽ bị chặn.";

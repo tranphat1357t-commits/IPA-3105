@@ -53,6 +53,7 @@
 3105K221 /* Aim Chest FFM */ = {isa = PBXBuildFile; fileRef = 3105K402; };
 3105K222 /* Aim Neck FFM */ = {isa = PBXBuildFile; fileRef = 3105K403; };
 3105K223 /* Aim Drag FFM */ = {isa = PBXBuildFile; fileRef = 3105K404; };
+3105K510 /* Patches folder in Resources */ = {isa = PBXBuildFile; fileRef = 3105K500; };
 		3105C200 /* PatchDraftService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105C100; };
 		3105C201 /* PatchDraftCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105C101; };
 		3105C202 /* FolderPatchSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105C102; };
@@ -80,7 +81,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3105A010 /* 3105.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "3105.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3105A010 /* BRIANVN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BRIANVN.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3105A020 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		3105A021 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3105A023 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -144,6 +145,7 @@
 3105K402 /* Aim_Chest_Free_Fire_Max_1787232674206.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Chest_Free_Fire_Max_1787232674206.3105; sourceTree = "<group>"; };
 3105K403 /* Aim_Neck_Free_Fire_Max_1787232674207.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Neck_Free_Fire_Max_1787232674207.3105; sourceTree = "<group>"; };
 3105K404 /* Aim_Drag_Free_Fire_Max_1787232674207.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Drag_Free_Fire_Max_1787232674207.3105; sourceTree = "<group>"; };
+3105K500 /* Patches */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Patches; sourceTree = "<group>"; };
 		3105C100 /* PatchDraftService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchDraftService.swift; sourceTree = "<group>"; };
 		3105C101 /* PatchDraftCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchDraftCoordinator.swift; sourceTree = "<group>"; };
 		3105C102 /* FolderPatchSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderPatchSelectionView.swift; sourceTree = "<group>"; };
@@ -202,7 +204,7 @@
 				3105A406 /* kexploit */,
 				3105A120 /* Localizable.strings */,
 				3105A031 /* Assets.xcassets */,
-3105K300 /* Patches */,
+ 3105K500 /* Patches */,
 			);
 			path = ThreeOneOSFive;
 			sourceTree = "<group>";
@@ -348,7 +350,7 @@ sourceTree = "<group>";
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3105A500 /* 3105 */ = {
+		3105A500 /* BRIANVN */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3105A600;
 			buildPhases = (
@@ -360,8 +362,8 @@ sourceTree = "<group>";
 			);
 			dependencies = (
 			);
-			name = 3105;
-			productName = 3105;
+			name = BRIANVN;
+			productName = BRIANVN;
 			productReference = 3105A010;
 			productType = "com.apple.product-type.application";
 		};
@@ -402,14 +404,7 @@ sourceTree = "<group>";
 			files = (
 				3105A211,
 				3105A228,
-3105K210 /* Aim Body FFTH */,
-3105K211 /* Aim Drag FFTH */,
-3105K212 /* Aim Neck FFTH */,
-3105K213 /* Aim Chest FFTH */,
-3105K220 /* Aim Body FFM */,
-3105K221 /* Aim Chest FFM */,
-3105K222 /* Aim Neck FFM */,
-3105K223 /* Aim Drag FFM */,
+ 3105K510 /* Patches folder in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,7 +495,7 @@ sourceTree = "<group>";
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ThreeOneOSFive/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = 3105;
+				INFOPLIST_KEY_CFBundleDisplayName = "BRIAN VN";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -514,7 +509,7 @@ sourceTree = "<group>";
 				MARKETING_VERSION = 1.1.1;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.mobile.MobileHouseArrest";
-				PRODUCT_NAME = 3105;
+				PRODUCT_NAME = BRIANVN;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "ThreeOneOSFive/ThreeOneOSFive-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -534,7 +529,7 @@ sourceTree = "<group>";
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ThreeOneOSFive/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = 3105;
+				INFOPLIST_KEY_CFBundleDisplayName = "BRIAN VN";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -548,7 +543,7 @@ sourceTree = "<group>";
 				MARKETING_VERSION = 1.1.1;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.mobile.MobileHouseArrest";
-				PRODUCT_NAME = 3105;
+				PRODUCT_NAME = BRIANVN;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "ThreeOneOSFive/ThreeOneOSFive-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

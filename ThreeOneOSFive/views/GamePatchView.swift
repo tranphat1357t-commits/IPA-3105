@@ -142,7 +142,8 @@ final class FFTHPatchController: ObservableObject {
             for preset in FFTHPatchPreset.allCases where missingPresets.contains(preset) {
                 guard let sourceURL = Bundle.main.url(
                     forResource: preset.resourceName,
-                    withExtension: "3105"
+                    withExtension: "3105",
+                    subdirectory: "Patches/FFTH"
                 ) else {
                     throw PatchPackageError.invalidProject
                 }
@@ -259,7 +260,11 @@ final class FFMPatchController: ObservableObject {
         }
         do {
             for preset in FFMPatchPreset.allCases {
-                guard let sourceURL = Bundle.main.url(forResource: preset.resourceName, withExtension: "3105") else {
+                guard let sourceURL = Bundle.main.url(
+                    forResource: preset.resourceName,
+                    withExtension: "3105",
+                    subdirectory: "Patches/FFM"
+                ) else {
                     throw PatchPackageError.invalidProject
                 }
                 let data = try Data(contentsOf: sourceURL, options: .mappedIfSafe)
