@@ -30,6 +30,7 @@ enum SupportedGame: String, Identifiable {
 
 enum FFTHPatchPreset: String, CaseIterable, Identifiable {
     case body
+    case chest
     case drag
     case neck
 
@@ -38,6 +39,7 @@ enum FFTHPatchPreset: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .body: return "Proxy Body"
+        case .chest: return "Aim Chest"
         case .drag: return "Proxy Drag"
         case .neck: return "Proxy Neck"
         }
@@ -46,6 +48,7 @@ enum FFTHPatchPreset: String, CaseIterable, Identifiable {
     var detail: String {
         switch self {
         case .body: return "Aim vào phần thân"
+        case .chest: return "Aim ưu tiên vùng ngực"
         case .drag: return "Hỗ trợ kéo tâm lên đầu"
         case .neck: return "Aim ưu tiên vùng cổ"
         }
@@ -54,6 +57,7 @@ enum FFTHPatchPreset: String, CaseIterable, Identifiable {
     var icon: String {
         switch self {
         case .body: return "figure.stand"
+        case .chest: return "scope"
         case .drag: return "arrow.up.right"
         case .neck: return "scope"
         }
@@ -64,8 +68,50 @@ enum FFTHPatchPreset: String, CaseIterable, Identifiable {
     var resourceName: String {
         switch self {
         case .body: return "Aim_Body_Free_Fire_1787211276881"
+        case .chest: return "Aim_Chest_Free_Fire_1787232674206"
         case .drag: return "Aim_Drag_Free_Fire_1787211276882"
         case .neck: return "Aim_Neck_Free_Fire_1787211276883"
+        }
+    }
+}
+
+enum FFMPatchPreset: String, CaseIterable, Identifiable {
+    case body, chest, neck, drag
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .body: return "Aim Body"
+        case .chest: return "Aim Chest"
+        case .neck: return "Aim Cổ"
+        case .drag: return "Aim Drag"
+        }
+    }
+
+    var detail: String {
+        switch self {
+        case .body: return "Ưu tiên vùng thân"
+        case .chest: return "Ưu tiên vùng ngực"
+        case .neck: return "Ưu tiên vùng cổ"
+        case .drag: return "Hỗ trợ kéo tâm lên đầu"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .body: return "figure.stand"
+        case .chest, .neck: return "scope"
+        case .drag: return "arrow.up.right"
+        }
+    }
+
+    var resourceName: String {
+        switch self {
+        case .body: return "Aim_Body_Free_Fire_Max_1787232674206"
+        case .chest: return "Aim_Chest_Free_Fire_Max_1787232674206"
+        case .neck: return "Aim_Neck_Free_Fire_Max_1787232674207"
+        case .drag: return "Aim_Drag_Free_Fire_Max_1787232674207"
         }
     }
 }
@@ -133,7 +179,7 @@ final class FFTHPatchController: ObservableObject {
         guard busyPreset == nil else { return }
         busyPreset = preset
 
-        guard let item = item(for: preset), let project = item.project else {
+        guard let presetItem = item(for: preset), let project = presetItem.project else {
             busyPreset = nil
             errorMessage = "Không tìm thấy gói \(preset.title)."
             return
@@ -145,7 +191,7 @@ final class FFTHPatchController: ObservableObject {
                     _ = try await Task.detached(priority: .userInitiated) {
                         try DevicePatchService.apply(project: project)
                     }.value
-                } else if let receipt = DevicePatchService.latestReceipt(projectID: item.id) {
+                } else if let receipt = DevicePatchService.latestReceipt(projectID: presetItem.id) {
                     try await Task.detached(priority: .userInitiated) {
                         try DevicePatchService.restore(receipt: receipt)
                     }.value
@@ -187,6 +233,132 @@ final class FFTHPatchController: ObservableObject {
         let values = Dictionary(uniqueKeysWithValues: packageIDs.map {
             ($0.key.rawValue, $0.value.uuidString)
         })
+        UserDefaults.standard.set(values, forKey: Self.idsKey)
+    }
+}
+
+@MainActor
+final class FFMPatchController: ObservableObject {
+    @Published private(set) var enabled: [FFMPatchPreset: Bool] = [:]
+    @Published private(set) var busyPreset: FFMPatchPreset?
+    @Published var errorMessage: String?
+
+    private static let installedKey = "ffm.bundledPatchesInstalled.v1"
+    private static let idsKey = "ffm.bundledPatchIDs.v1"
+    private var packageIDs: [FFMPatchPreset: UUID] = [:]
+    private var activeReceipts: [FFMPatchPreset: PatchTransactionReceipt] = [:]
+
+    func prepare() {
+        if UserDefaults.standard.bool(forKey: Self.installedKey) {
+            loadPackageIDs()
+            syncEnabledState()
+            return
+        }
+        do {
+            for preset in FFMPatchPreset.allCases {
+                guard let sourceURL = Bundle.main.url(forResource: preset.resourceName, withExtension: "3105") else {
+                    throw PatchPackageError.invalidProject
+                }
+                let data = try Data(contentsOf: sourceURL, options: .mappedIfSafe)
+                let summary = try PatchPackageCodec.inspect(data)
+                guard !summary.isPasswordProtected else {
+                    throw PatchPackageError.invalidPasswordOrCorruptedPackage
+                }
+                let decoded = try PatchPackageCodec.decode(data, password: nil)
+                let existingURL = PatchProjectLibrary.load().first { $0.id == summary.packageID }?.packageURL
+                try PatchProjectLibrary.installImportedPackage(
+                    data: data,
+                    decoded: decoded,
+                    summary: summary,
+                    existingURL: existingURL
+                )
+                packageIDs[preset] = summary.packageID
+            }
+            savePackageIDs()
+            UserDefaults.standard.set(true, forKey: Self.installedKey)
+            syncEnabledState()
+        } catch {
+            errorMessage = "Không thể nạp bộ patch Free Fire Max vào thư viện."
+            log("ffm: bundled patch import failed: \(error)")
+        }
+    }
+
+    func isEnabled(_ preset: FFMPatchPreset) -> Bool { enabled[preset] ?? false }
+
+    func setEnabled(_ value: Bool, for preset: FFMPatchPreset) {
+        guard busyPreset == nil else { return }
+        busyPreset = preset
+        guard let presetItem = item(for: preset), let project = presetItem.project else {
+            busyPreset = nil
+            errorMessage = "Không tìm thấy gói \(preset.title)."
+            return
+        }
+        Task {
+            do {
+                if value {
+                    // FFM presets may target the same game file. Restore any
+                    // currently enabled preset first so its receipt remains
+                    // the exact transaction that is being reversed.
+                    for other in FFMPatchPreset.allCases where other != preset && isEnabled(other) {
+                        guard let receipt = activeReceipts[other]
+                            ?? self.item(for: other).flatMap({
+                                    DevicePatchService.latestReceipt(projectID: $0.id)
+                                })
+                        else { continue }
+                        try await Task.detached(priority: .userInitiated) {
+                            try DevicePatchService.restore(receipt: receipt)
+                        }.value
+                        enabled[other] = false
+                        activeReceipts[other] = nil
+                    }
+                    let receipt = try await Task.detached(priority: .userInitiated) {
+                        try DevicePatchService.apply(project: project)
+                    }.value
+                    activeReceipts[preset] = receipt
+                } else if let receipt = activeReceipts[preset]
+                            ?? DevicePatchService.latestReceipt(projectID: presetItem.id) {
+                    try await Task.detached(priority: .userInitiated) {
+                        try DevicePatchService.restore(receipt: receipt)
+                    }.value
+                    activeReceipts[preset] = nil
+                }
+                enabled[preset] = value
+                busyPreset = nil
+            } catch let error as PatchPackageError {
+                busyPreset = nil
+                errorMessage = error.errorDescription ?? "Không thể áp dụng patch."
+            } catch {
+                busyPreset = nil
+                errorMessage = "Không thể \(value ? "áp dụng" : "khôi phục") \(preset.title)."
+            }
+        }
+    }
+
+    private func item(for preset: FFMPatchPreset) -> PatchLibraryItem? {
+        guard let id = packageIDs[preset] else { return nil }
+        return PatchProjectLibrary.load().first { $0.id == id }
+    }
+
+    private func syncEnabledState() {
+        enabled = Dictionary(uniqueKeysWithValues: FFMPatchPreset.allCases.map { preset in
+            let receipt = DevicePatchService.latestReceipt(projectID: item(for: preset)?.id ?? UUID())
+            if let receipt {
+                activeReceipts[preset] = receipt
+            }
+            return (preset, receipt != nil)
+        })
+    }
+
+    private func loadPackageIDs() {
+        let values = UserDefaults.standard.dictionary(forKey: Self.idsKey) as? [String: String] ?? [:]
+        packageIDs = Dictionary(uniqueKeysWithValues: FFMPatchPreset.allCases.compactMap { preset in
+            guard let rawID = values[preset.rawValue], let id = UUID(uuidString: rawID) else { return nil }
+            return (preset, id)
+        })
+    }
+
+    private func savePackageIDs() {
+        let values = Dictionary(uniqueKeysWithValues: packageIDs.map { ($0.key.rawValue, $0.value.uuidString) })
         UserDefaults.standard.set(values, forKey: Self.idsKey)
     }
 }
@@ -263,6 +435,7 @@ private struct GameCard: View {
 struct GamePatchView: View {
     let game: SupportedGame
     @StateObject private var controller = FFTHPatchController()
+    @StateObject private var ffmController = FFMPatchController()
 
     var body: some View {
         List {
@@ -321,10 +494,40 @@ struct GamePatchView: View {
                 }
             } else {
                 Section {
-                    Label("Bộ file FFM chưa được thêm", systemImage: "clock")
-                        .foregroundStyle(.secondary)
+                    ForEach(FFMPatchPreset.allCases) { preset in
+                        Toggle(isOn: Binding(
+                            get: { ffmController.isEnabled(preset) },
+                            set: { ffmController.setEnabled($0, for: preset) }
+                        )) {
+                            HStack(spacing: 12) {
+                                Image(systemName: preset.icon)
+                                    .font(.headline)
+                                    .foregroundStyle(game.tint)
+                                    .frame(width: 28)
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(preset.title).font(.body.weight(.semibold))
+                                    Text(preset.detail)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                        }
+                        .disabled(ffmController.busyPreset != nil)
+                    }
+                } header: {
+                    HStack {
+                        Label("AIM FREE FIRE MAX", systemImage: "scope")
+                        Spacer()
+                        if ffmController.busyPreset != nil {
+                            ProgressView().controlSize(.small)
+                        } else {
+                            Text("AUTO")
+                                .font(.caption2.weight(.bold))
+                                .foregroundStyle(game.tint)
+                        }
+                    }
                 } footer: {
-                    Text("Màn hình Free Fire Max đã sẵn sàng. Thêm bộ .3105 của FFM sau để bật các công tắc.")
+                    Text("Chỉ nên bật một cấu hình tại một thời điểm. Khi đổi cấu hình, patch đang bật sẽ được khôi phục an toàn trước.")
                 }
             }
         }
@@ -334,6 +537,8 @@ struct GamePatchView: View {
         .onAppear {
             if game == .ffth {
                 controller.prepare()
+            } else {
+                ffmController.prepare()
             }
         }
         .alert(
@@ -346,6 +551,17 @@ struct GamePatchView: View {
             Button("OK") { controller.errorMessage = nil }
         } message: {
             Text(controller.errorMessage ?? "")
+        }
+        .alert(
+            "Không thể thực hiện",
+            isPresented: Binding(
+                get: { ffmController.errorMessage != nil },
+                set: { if !$0 { ffmController.errorMessage = nil } }
+            )
+        ) {
+            Button("OK") { ffmController.errorMessage = nil }
+        } message: {
+            Text(ffmController.errorMessage ?? "")
         }
     }
 }
