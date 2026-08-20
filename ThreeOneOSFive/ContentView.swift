@@ -217,6 +217,7 @@ private struct DashboardView: View {
         NavigationStack {
             List {
                 deviceSection
+                GameSelectionView()
                 featuresSection
             }
             .navigationBarTitleDisplayMode(.inline)

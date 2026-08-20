@@ -44,6 +44,10 @@
 		3105B220 /* PatchProjectStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105B120; };
 		3105B221 /* PatchProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105B121; };
 		3105B222 /* PatchProjectEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105B122; };
+3105K200 /* GamePatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105K100; };
+3105K210 /* Aim Body FFTH */ = {isa = PBXBuildFile; fileRef = 3105K201; };
+3105K211 /* Aim Drag FFTH */ = {isa = PBXBuildFile; fileRef = 3105K202; };
+3105K212 /* Aim Neck FFTH */ = {isa = PBXBuildFile; fileRef = 3105K203; };
 		3105C200 /* PatchDraftService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105C100; };
 		3105C201 /* PatchDraftCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105C101; };
 		3105C202 /* FolderPatchSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105C102; };
@@ -126,6 +130,10 @@
 		3105B120 /* PatchProjectStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchProjectStore.swift; sourceTree = "<group>"; };
 		3105B121 /* PatchProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchProjectsView.swift; sourceTree = "<group>"; };
 		3105B122 /* PatchProjectEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchProjectEditorView.swift; sourceTree = "<group>"; };
+3105K100 /* GamePatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePatchView.swift; sourceTree = "<group>"; };
+3105K201 /* Aim_Body_Free_Fire_1787211276881.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Body_Free_Fire_1787211276881.3105; sourceTree = "<group>"; };
+3105K202 /* Aim_Drag_Free_Fire_1787211276882.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Drag_Free_Fire_1787211276882.3105; sourceTree = "<group>"; };
+3105K203 /* Aim_Neck_Free_Fire_1787211276883.3105 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aim_Neck_Free_Fire_1787211276883.3105; sourceTree = "<group>"; };
 		3105C100 /* PatchDraftService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchDraftService.swift; sourceTree = "<group>"; };
 		3105C101 /* PatchDraftCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchDraftCoordinator.swift; sourceTree = "<group>"; };
 		3105C102 /* FolderPatchSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderPatchSelectionView.swift; sourceTree = "<group>"; };
@@ -184,6 +192,7 @@
 				3105A406 /* kexploit */,
 				3105A120 /* Localizable.strings */,
 				3105A031 /* Assets.xcassets */,
+3105K300 /* Patches */,
 			);
 			path = ThreeOneOSFive;
 			sourceTree = "<group>";
@@ -225,10 +234,29 @@
 				3105E101 /* CleanerView.swift */,
 				3105F106 /* WallpaperLabView.swift */,
 				3105F108 /* OnboardingView.swift */,
+3105K100 /* GamePatchView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
 		};
+3105K300 /* Patches */ = {
+isa = PBXGroup;
+children = (
+3105K301 /* FFTH */,
+);
+path = Patches;
+sourceTree = "<group>";
+};
+3105K301 /* FFTH */ = {
+isa = PBXGroup;
+children = (
+3105K201 /* Aim_Body_Free_Fire_1787211276881.3105 */,
+3105K202 /* Aim_Drag_Free_Fire_1787211276882.3105 */,
+3105K203 /* Aim_Neck_Free_Fire_1787211276883.3105 */,
+);
+path = FFTH;
+sourceTree = "<group>";
+};
 		3105A405 /* helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,6 +379,9 @@
 			files = (
 				3105A211,
 				3105A228,
+3105K210 /* Aim Body FFTH */,
+3105K211 /* Aim Drag FFTH */,
+3105K212 /* Aim Neck FFTH */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +433,7 @@
 				3105F204,
 				3105F205,
 				3105F206,
+3105K200,
 				3105G200,
 				3105G201,
 				3105G202,
